@@ -21,15 +21,20 @@ type Props = { monthDate: Date; weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6 };
 export default function Month({ monthDate, weekStartsOn = 0 }: Props) {
     const days = getMonthDays(monthDate, weekStartsOn);
     const { journalData } = useContext(CalendarContext);
-    return (
-        <section className="border-t border-gray-200" style={{ padding: "6px 12px" }}>
 
-            <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(7, 1fr)",
-                gap: 6,
-                gridAutoRows: "116px"
-            }}>
+    return (
+        <section className="border-t border-gray-200 h-full w-full py-[6px] px-0 md:px-[12px]">
+
+            <div
+                style={{
+                    height: 'calc(100vh - 140px)',
+                    width: '100%',
+                    display: "grid",
+                    gridTemplateColumns: "repeat(7, 1fr)",
+                    gap: 6,
+                    gridTemplateRows: 'repeat(6, 1fr)',
+
+                }}>
 
                 {days.map((d, i) => {
                     const dimmed = !isSameMonth(d, monthDate);
@@ -41,13 +46,10 @@ export default function Month({ monthDate, weekStartsOn = 0 }: Props) {
                         } return false
                     })
 
-                    if (filterdData.length > 0) {
-                        console.log(filterdData)
-                    }
 
                     return (
                         <div key={String(key)}
-                            className={cn("min-h-16 text-right rounded-sm py-1 px-2 box-border text-black",
+                            className={cn("text-right rounded-sm py-1 px-2 box-border text-black",
                                 isFirstCol && "bg-gray-200"
                             )}
                             style={{
@@ -56,11 +58,12 @@ export default function Month({ monthDate, weekStartsOn = 0 }: Props) {
                             }}>
                             {format(d, "d")}
 
-                            {!dimmed && filterdData.map((data) => {
+                            {!dimmed && filterdData.map((data, i) => {
+                                if (i > 0) return;
                                 return (
-                                    <div>
-                                        <Rating style={{ width: 80 }} value={data.rating} />
-                                        <div className="h-16 w-20">
+                                    <div key={data.id} className="flex items-center flex-col">
+                                        <Rating style={{ width: 30 }} value={data.rating} />
+                                        <div className="h-12 w-11/12">
                                             <img src={data.imgUrl} className="object-contain h-full w-full" />
                                         </div>
                                     </div>

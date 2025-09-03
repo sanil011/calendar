@@ -1,6 +1,7 @@
 
 
 declare type JournalType = {
+    id: string;
     imgUrl: string;
     rating: number;
     categories: string[];
