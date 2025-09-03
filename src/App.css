@@ -1,4 +1,19 @@
-/* body {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-} */
+
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
+
+
+.swiper-slide-prev {
+  transform: scale(0.9) !important;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease;
+}
+
+.swiper-slide-active {
+  transform: scale(1);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease;
+}
+
+.swiper-slide-next {
+  transform: scale(0.9) !important;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease;
+}

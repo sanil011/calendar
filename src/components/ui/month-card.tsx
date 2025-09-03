@@ -4,7 +4,8 @@ import { getMonthDays } from "../../util/date";
 import { cn } from "../../util/helper";
 import { CalendarContext } from "../../contexts/calendar-context";
 import { useContext } from "react";
-import { Rating } from '@smastrom/react-rating'
+import JournalCardMonth from "./journal-card-month";
+
 
 
 type Props = { monthDate: Date; weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6 };
@@ -13,7 +14,7 @@ type Props = { monthDate: Date; weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6 };
  * Represents a Month card UI component.
  * @component
  * @example
- * <KanbanCard
+ * <MonthCard
  *   monthDate={Sat May 03 2025 00:32:10 GMT+0530 (India Standard Time)}
  * />
  */
@@ -61,12 +62,12 @@ export default function Month({ monthDate, weekStartsOn = 0 }: Props) {
                             {!dimmed && filterdData.map((data, i) => {
                                 if (i > 0) return;
                                 return (
-                                    <div key={data.id} className="flex items-center flex-col">
-                                        <Rating style={{ width: 30 }} value={data.rating} />
-                                        <div className="h-12 w-11/12">
-                                            <img src={data.imgUrl} className="object-contain h-full w-full" />
-                                        </div>
-                                    </div>
+                                    <JournalCardMonth
+                                        key={data.id}
+                                        id={data.id}
+                                        imgUrl={data.imgUrl}
+                                        rating={data.rating}
+                                    />
                                 )
                             })}
                         </div>
