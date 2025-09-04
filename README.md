@@ -1,70 +1,160 @@
-# React + TypeScript + Vite
+# Calendar Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive calendar application built with React, TypeScript, and Vite. This application features a beautiful UI with journal functionality, month navigation, and responsive design.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📅 Interactive calendar interface
+- 📝 Journal entry management
+- 🎨 Modern, responsive UI design
+- 🔄 Month navigation
+- 💾 Local data persistence
+- 📱 Mobile-friendly design
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend Framework**: React 18
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **UI Components**: Custom component library
+- **State Management**: React Context API
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+calendar/
+├── dist/                          # Build output directory
+├── node_modules/                  # Dependencies
+├── public/                        # Static assets
+│   └── vite.svg
+├── src/                           # Source code
+│   ├── assets/                    # Static assets
+│   │   └── react.svg
+│   ├── components/                # React components
+│   │   ├── card/                  # Card-related components
+│   │   │   ├── carousel.tsx       # Image carousel component
+│   │   │   ├── journal-card-month.tsx  # Monthly journal card
+│   │   │   └── month-card.tsx     # Month display card
+│   │   ├── sections/              # Page sections
+│   │   │   ├── add-journal.tsx    # Journal creation form
+│   │   │   ├── header.tsx         # Application header
+│   │   │   └── journal-dialog.tsx # Journal dialog/modal
+│   │   └── ui/                    # Reusable UI components
+│   │       ├── button.tsx         # Button component
+│   │       ├── dialog.tsx         # Dialog component
+│   │       ├── input.tsx          # Input field component
+│   │       ├── label.tsx          # Label component
+│   │       └── textarea.tsx       # Textarea component
+│   ├── contexts/                  # React contexts
+│   │   └── calendar-context.ts    # Calendar state management
+│   ├── lib/                       # Utility libraries
+│   │   └── utils.ts               # General utilities
+│   ├── providers/                 # Context providers
+│   │   └── calendar-context-provider.tsx  # Calendar context provider
+│   ├── types/                     # TypeScript type definitions
+│   │   └── global.d.ts            # Global type declarations
+│   ├── util/                      # Utility functions
+│   │   ├── date.ts                # Date manipulation utilities
+│   │   └── journalEntries.ts      # Journal entry utilities
+│   ├── App.css                    # Main application styles
+│   ├── App.tsx                    # Main application component
+│   ├── index.css                  # Global styles
+│   ├── main.tsx                   # Application entry point
+│   └── vite-env.d.ts              # Vite environment types
+├── .eslintrc.js                   # ESLint configuration
+├── index.html                     # HTML template
+├── package.json                   # Project dependencies and scripts
+├── tsconfig.json                  # TypeScript configuration
+├── tsconfig.app.json              # App-specific TypeScript config
+├── tsconfig.node.json             # Node-specific TypeScript config
+└── vite.config.ts                 # Vite build configuration
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Prerequisites
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Before running this project, make sure you have the following installed:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Node.js** (version 16 or higher)
+- **npm** or **yarn** package manager
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd calendar
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+## Running Locally
+
+### Development Mode
+
+To start the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
 ```
-# calendar
+
+The application will be available at `http://localhost:5173` (or another port if 5173 is occupied).
+
+### Build for Production
+
+To create a production build:
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+The built files will be in the `dist/` directory.
+
+### Preview Production Build
+
+To preview the production build locally:
+
+```bash
+npm run preview
+# or
+yarn preview
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+
+## Development
+
+The project uses:
+
+- **Vite** for fast development and building
+- **TypeScript** for type safety
+- **ESLint** for code quality
+- **Tailwind CSS** for styling
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
