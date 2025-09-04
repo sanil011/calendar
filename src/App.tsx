@@ -11,7 +11,7 @@ import { useInView } from "react-intersection-observer";
 import "./App.css"
 const INITIAL_BEFORE = 6;
 const INITIAL_AFTER = 6;
-const CHUNK = 12; // how many months to add each time we hit a sentinel
+const CHUNK = 6; // how many months to add each time we hit a sentinel
 
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
   // Top & bottom sentinels
   const { ref: topRef, inView: topInView } = useInView({
     root: containerRef.current,
-    rootMargin: " 2000px 0px",
+    rootMargin: "2000px 0px",
     threshold: 0,
   });
   const { ref: bottomRef, inView: bottomInView } = useInView({
@@ -47,6 +47,7 @@ export default function App() {
   }, [bottomInView]);
 
   useEffect(() => {
+
     if (!topInView) return;
 
     const container = containerRef.current;
@@ -108,6 +109,42 @@ export default function App() {
     if (elem) {
       elem.scrollIntoView({ block: "start", behavior: "auto" })
     }
+
+    if (!container) return;
+    const onKey = (e: KeyboardEvent) => {
+      // Ignore when user is typing in a field or contentEditable
+      const t = e.target as HTMLElement | null;
+      if (t) {
+        const tag = t.tagName;
+        const typing =
+          tag === "INPUT" ||
+          tag === "TEXTAREA" ||
+          tag === "SELECT" ||
+          t.isContentEditable;
+        if (typing) return;
+      }
+
+      const step = 80;
+
+      let handled = true;
+
+      switch (e.key) {
+        case "ArrowDown":
+          container.scrollBy({ top: step, behavior: "smooth" });
+          break;
+        case "ArrowUp":
+          container.scrollBy({ top: -step, behavior: "smooth" });
+          break;
+        default:
+          handled = false;
+      }
+
+      if (handled) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("keydown", onKey, { passive: false });
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   return (
