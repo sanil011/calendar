@@ -5,6 +5,7 @@
  * <Carousel
  *   setIsOpen={()=> void}
  *   selected ={selected}
+ *   setIsEditModal={setIsEditModal}
  * />
  */
 
@@ -15,7 +16,8 @@ import { parse, format, compareAsc } from 'date-fns';
 import { CalendarContext } from '../../contexts/calendar-context';
 import { Rating } from '@smastrom/react-rating'
 import type { Swiper as SwiperType } from 'swiper';
-import { Trash, SquarePen } from 'lucide-react';
+import { Trash, SquarePen, Plus } from 'lucide-react';
+
 
 
 
@@ -67,9 +69,13 @@ const Carousel = ({ setIsOpen, selected, setIsEditModal, setEditData }: Calendar
                 setIsOpen(false);
             }}
             className='absolute top-0 left-0 w-full overflow-hidden z-50 h-screen bg-black/40 flex items-center justify-center'>
+
+            <div onClick={() => setIsOpen(false)} className='w-8 h-8 absolute right-10 top-15 z-50 rounded-full bg-gray-600 flex items-center justify-center'>
+                <Plus color='white' />
+            </div>
             <div
                 onClick={(e) => e.stopPropagation()}
-                className='flex justify-center overflow-hidden items-center !h-[60vh] md:!h-1/2 '>
+                className='flex justify-center overflow-hidden items-center !h-[60vh] md:!h-1/2  relative '>
                 <Swiper
                     modules={[Keyboard]}
                     keyboard={{ enabled: true }}
