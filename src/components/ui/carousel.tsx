@@ -15,15 +15,20 @@ import { parse, format, compareAsc } from 'date-fns';
 import { CalendarContext } from '../../contexts/calendar-context';
 import { Rating } from '@smastrom/react-rating'
 import type { Swiper as SwiperType } from 'swiper';
+import { Trash, SquarePen } from 'lucide-react';
+
+
 
 type CalendarContextType = {
     setIsOpen: (val: boolean) => void
     selected: string;
+    setEditData: (val: any) => void;
+    setIsEditModal: (val: boolean) => void;
 }
 
-const Carousel = ({ setIsOpen, selected }: CalendarContextType) => {
-    const { journalData } = useContext(CalendarContext);
-    
+const Carousel = ({ setIsOpen, selected, setIsEditModal, setEditData }: CalendarContextType) => {
+    const { journalData, setJournalData } = useContext(CalendarContext);
+
     const modalSwiperRef = useRef<SwiperType>(null);
 
     const sorted = useMemo(() => {
@@ -50,6 +55,10 @@ const Carousel = ({ setIsOpen, selected }: CalendarContextType) => {
         }
     }, [selectedIndex]);
 
+    const handleDelete = (id: string) => {
+        const filteredData = journalData.filter((dt) => dt.id != id);
+        setJournalData(filteredData);
+    }
 
     return (
         <div
@@ -66,8 +75,8 @@ const Carousel = ({ setIsOpen, selected }: CalendarContextType) => {
                     keyboard={{ enabled: true }}
                     centeredSlides
                     grabCursor
-                    initialSlide={selectedIndex}                     
-                    onSwiper={(sw) => (modalSwiperRef.current = sw)}  
+                    initialSlide={selectedIndex}
+                    onSwiper={(sw) => (modalSwiperRef.current = sw)}
                     slidesPerView={1.7}
                     breakpoints={{
                         640: { slidesPerView: 1.15, spaceBetween: 20 },
@@ -92,7 +101,16 @@ const Carousel = ({ setIsOpen, selected }: CalendarContextType) => {
                                                 <Rating style={{ width: 50 }} value={Math.floor(dt.rating)} />
                                             </div>
 
-                                            <h1 className='text-left font-semibold text-gray-600'>{journalDate}</h1>
+                                            <div className='flex items-center justify-between'>
+                                                <h1 className='text-left font-semibold text-gray-600'>{journalDate}</h1>
+                                                <div className='flex items-center gap-2'>
+                                                    <SquarePen onClick={() => {
+                                                        setEditData(dt);
+                                                        setIsEditModal(true)
+                                                    }} size={12} className='cursor-pointer' />
+                                                    <Trash onClick={() => handleDelete(dt.id)} size={12} className='cursor-pointer' />
+                                                </div>
+                                            </div>
                                             <h1 className='text-left text-sm leading-4 text-gray-500'>{dt.description.split(" ").slice(0, 18).join(" ")}</h1>
                                         </div>
                                         <hr className=' h-[1.5px] text-gray-400 bg-gray-400' />

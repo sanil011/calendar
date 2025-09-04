@@ -17,3 +17,11 @@
   transform: scale(0.9) !important;
   transition: transform 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease;
 }
+dialog::backdrop {
+  background: rgb(0 0 0 / 0);
+  transition: background 300ms ease;
+}
+dialog.is-open::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
