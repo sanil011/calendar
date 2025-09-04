@@ -11,7 +11,7 @@ import { useInView } from "react-intersection-observer";
 import "./App.css"
 const INITIAL_BEFORE = 6;
 const INITIAL_AFTER = 6;
-const CHUNK = 6; // how many months to add each time we hit a sentinel
+const CHUNK = 6; 
 
 
 export default function App() {
