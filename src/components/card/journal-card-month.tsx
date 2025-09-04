@@ -10,7 +10,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Rating } from '@smastrom/react-rating';
 import Carousel from './carousel';
-import { JournalDialog } from '../sections/journal-dialog';
+import { JournalDialog } from '@/components/sections/journal-dialog';
 
 type JournalCardMonth = {
   imgUrl: string;
@@ -24,7 +24,7 @@ export default function JournalCardMonth({ imgUrl, rating, id }: JournalCardMont
   const [selected, setSelected] = useState<string>('');
   const [isEditModal, setIsEditModal] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [editData, setEditData] = useState();
+  const [editData, setEditData] = useState<JournalType | undefined>(undefined);
   const lastUrlRef = useRef<string | null>(null);
 
   const handleImageChange = (file: File | null) => {
@@ -54,7 +54,7 @@ export default function JournalCardMonth({ imgUrl, rating, id }: JournalCardMont
     setSelected(id)
   }
 
-  
+
 
   return (
     <div onClick={handleClick} key={id} className="flex items-center flex-col">

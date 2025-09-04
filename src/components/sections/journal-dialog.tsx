@@ -11,16 +11,22 @@ import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Textarea } from "../ui/textarea"
+import { fromDDMMYYYYToISO, toDDMMYYYY } from "@/util/date"
+
+/**
+ * Represents a Journal Modal UI component.
+ * @component
+ * @example
+ * <JournalDialog
+    handleImageChange={handleImageChange}
+    imageUrl={imageUrl}
+    setImageUrl={setImageUrl}
+    setIsOpen={setIsOpen}
+    isOpen={isOpen}
+ * />
+ */
 
 
-type JournalEntry = {
-    id: string
-    imgUrl: string
-    rating: number
-    categories: string[]
-    date: string // MM/DD/YYYY
-    description: string
-}
 
 type JournalDialogProps = {
     isOpen: boolean;
@@ -29,8 +35,10 @@ type JournalDialogProps = {
     imageUrl: string | null;
     setImageUrl: (url: string | null) => void;
     mode?: "create" | "edit"
-    initialEntry?: Partial<JournalEntry> & { id?: string } 
+    initialEntry?: Partial<JournalType> & { id?: string }
 }
+
+
 
 export function JournalDialog(
     { isOpen,
@@ -41,23 +49,11 @@ export function JournalDialog(
         mode = "create",
         initialEntry,
     }: JournalDialogProps) {
-    // const [isOpen, setIsOpen] = useState(false)
-    const { journalData, setJournalData } = useContext(CalendarContext)    // form state
+
+    const { journalData, setJournalData } = useContext(CalendarContext)
     const [description, setDescription] = useState("")
     const [date, setDate] = useState("") // yyyy-mm-dd from <input type="date">
     const [rating, setRating] = useState<string>("") // keep as string until we parse
-
-    // helper: format yyyy-mm-dd -> dd/MM/YYYY to match calendar keys
-    const toDDMMYYYY = (isoDate: string) => {
-        if (!isoDate) return ""
-        const [yyyy, mm, dd] = isoDate.split("-")
-        return `${dd}/${mm}/${yyyy}`
-    }
-    const fromDDMMYYYYToISO = (dmy: string) => {
-        if (!dmy) return ""
-        const [dd, mm, yyyy] = dmy.split("/")
-        return `${yyyy}-${mm}-${dd}`
-    }
 
 
     // Prefill when opening for edit / or when initialEntry changes
@@ -88,7 +84,7 @@ export function JournalDialog(
 
         const id = String(Date.now())
 
-        const payload: JournalEntry = {
+        const payload: JournalType = {
             id,
             imgUrl: imageUrl ?? "",
             rating: Number.isNaN(parseFloat(rating)) ? 0 : parseFloat(rating),
@@ -112,21 +108,14 @@ export function JournalDialog(
         setImageUrl(null)
 
     }
-    useEffect(() => {
-        console.log("sanil",journalData)
-    },[journalData])
-
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            
-
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Add Journal</DialogTitle>
                 </DialogHeader>
 
-                {/* Form fields */}
                 <div className="grid gap-4 py-2">
                     <div className="grid gap-2">
                         <Label htmlFor="description">Description</Label>

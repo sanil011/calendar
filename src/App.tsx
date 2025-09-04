@@ -1,13 +1,12 @@
 // src/App.tsx
-// @ts-nocheck
 import { useEffect, useMemo, useRef, useState, useContext } from "react";
 import { format, addMonths, subMonths } from "date-fns";
-import Month from "./components/ui/month-card";
-import Header from "./components/sections/header";
-import { rangeMonths, monthKey } from "./util/date";
-import { CalendarContext } from "./contexts/calendar-context";
+import Month from "@/components/card/month-card";
+import Header from "@/components/sections/header";
+import { rangeMonths, monthKey } from "@/util/date";
+import { CalendarContext } from "@/contexts/calendar-context";
+import AddJournal from "@/components/sections/add-journal";
 import { useInView } from "react-intersection-observer";
-import AddJournal from "./components/sections/add-journal";
 
 import "./App.css"
 const INITIAL_BEFORE = 6;
@@ -23,72 +22,6 @@ export default function App() {
   );
 
   const containerRef = useRef<HTMLDivElement | null>(null);
-  // const topSentinelRef = useRef<HTMLDivElement | null>(null);
-  // const bottomSentinelRef = useRef<HTMLDivElement | null>(null);
-  // // const loadingTopRef = useRef(false);
-
-  // // useEffect(() => {
-  // //   const container = containerRef.current;
-  // //   const top = topSentinelRef.current;
-  // //   const bottom = bottomSentinelRef.current;
-  // //   if (!container || !top || !bottom) return;
-
-  // //   const io = new IntersectionObserver(
-  // //     (entries) => {
-  // //       console.log("sanil", entries)
-  // //       for (const entry of entries) {
-  // //         if (!entry.isIntersecting) continue;
-
-  // //         if (entry.target.id === 'bottom-target') {
-  // //           // Append more months at the bottom
-
-  // //           // if (!entry.isVisible) return;
-  // //           setMonths((prev) => {
-  // //             const last = prev[prev.length - 1];
-  // //             const next: Date[] = [];
-  // //             for (let i = 1; i <= CHUNK; i++) next.push(addMonths(last, i));
-  // //             return [...prev, ...next];
-  // //           });
-
-  // //           // setMonths((prev) => {
-  // //           //   const date = prev[prev.length - 1];
-  // //           //   const months = rangeMonths(date, CHUNK, 0);
-  // //           //   return [...prev, ...months];
-  // //           // })
-  // //         }
-
-  // //         if (entry.target.id === 'top-target') {
-
-  // //           console.log('sanil');
-  // //           setMonths((prev) => {
-  // //             const first = prev[0];
-  // //             const more: Date[] = [];
-
-  // //             for (let i = CHUNK; i >= 1; i--) more.push(subMonths(first, i));
-  // //             return [...more, ...prev];
-  // //           });
-
-  // //           // setMonths((prev) => {
-  // //           //   const date = prev[0];
-  // //           //   const months = rangeMonths(date, CHUNK, 0);
-  // //           //   return [...months, ...prev];
-  // //           // })
-  // //         }
-  // //       }
-  // //     },
-  // //     {
-  // //       root: container,
-  // //       rootMargin: "1200px 0px", // start loading ahead of time
-  // //       threshold: 0.01,
-  // //     }
-  // //   );
-
-  // //   io.observe(top);
-  // //   io.observe(bottom);
-
-  // //   return () => io.disconnect();
-  // // }, []);
-  // const loadingTopRef = useRef(false);
 
   // Top & bottom sentinels
   const { ref: topRef, inView: topInView } = useInView({
@@ -112,46 +45,6 @@ export default function App() {
       return [...prev, ...next];
     });
   }, [bottomInView]);
-  // Load more at top (preserve scroll position)
-
-
-  // useEffect(() => {
-  //   if (!topInView) return;
-  //   // prepend months
-
-  //   // 1. Store reference to current first element and scroll position
-  //   const container = containerRef.current;
-  //   const firstElement = container?.querySelector('[data-monthkey]');
-  //   const initialScrollTop = container?.scrollTop || 0;
-
-  //   setMonths(prev => {
-  //     const first = prev[0];
-  //     const more: Date[] = [];
-  //     for (let i = CHUNK; i >= 1; i--) more.push(subMonths(first, i));
-  //     return [...more, ...prev];
-  //   });
-
-
-  //   // 3. After DOM update, adjust scroll position
-  //   setTimeout(() => {
-  //     if (!container || !firstElement) return;
-
-  //     // Find the same element after re-render
-  //     const monthKey = (firstElement as HTMLElement).dataset.monthkey;
-  //     const newFirstElement = container.querySelector(`[data-monthkey="${monthKey}"]`);
-
-  //     if (newFirstElement) {
-  //       // Calculate how much the element moved down
-  //       const newPosition = (newFirstElement as HTMLElement).offsetTop;
-  //       const positionChange = newPosition - initialScrollTop;
-
-  //       // Adjust scroll position to maintain visual continuity
-  //       container.scrollTop = initialScrollTop + positionChange;
-  //     }
-  //   }, 0);
-
-
-  // }, [topInView]);
 
   useEffect(() => {
     if (!topInView) return;
@@ -184,12 +77,9 @@ export default function App() {
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          // console.log("sanil", entry)
-          // if (!entry.isVisible) return;
           const monthKey = (entry.target as HTMLElement).dataset.monthkey
           if (monthKey) {
             setActiveMonth(format(monthKey, 'MMM-yyyy'))
-            // console.log("sanil", format(monthKey, 'MMM-yyyy'), entry)
           }
         }
       },
@@ -221,13 +111,13 @@ export default function App() {
   }, []);
 
   return (
-    <div className="h-screen relative w-full md:w-5/12 mx-auto">
+    <div className="h-screen max-w-[680px] relative w-full   mx-auto">
 
       <Header />
 
       <div
         ref={containerRef}
-        className="h-[calc(100%-80px)]"
+        className="h-[calc(100%-80px)] px-2"
         style={{
           overflowY: "auto",
           borderLeft: "1px solid #eee",
@@ -237,7 +127,7 @@ export default function App() {
         }}
       >
 
-        <div id='top-target' ref={topRef} className="border border-red-700 h-4" />
+        <div id='top-target' ref={topRef} className="h-1" />
 
         {months.map((m,) => {
           return (
@@ -247,10 +137,10 @@ export default function App() {
           )
         })}
 
-        <div id='bottom-target' ref={bottomRef} className="border border-red-700 h-4" />
+        <div id='bottom-target' ref={bottomRef} className="h-1" />
       </div>
 
-      <AddJournal/>
+      <AddJournal />
     </div>
 
   );

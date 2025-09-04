@@ -1,7 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { JournalDialog } from './journal-dialog';
-
+import { cn } from '@/lib/utils';
+/**
+ * Represents a Add journal Button  component.
+ * @component
+ * @example
+ * <AddJournal
+ * />
+ */
 
 const AddJournal = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,17 +29,17 @@ const AddJournal = () => {
         }
     }
 
-
     // cleanup on unmount to avoid leaking the object URL
     useEffect(() => {
         return () => {
             if (lastUrlRef.current) URL.revokeObjectURL(lastUrlRef.current)
         }
     }, [])
+
     return (
         <div>
-            <div className='absolute top-[90%] right-[10%] bg-blue-400 w-10 h-10 rounded-full flex items-center justify-center'>
-                <Plus onClick={() => setIsOpen(true)} className='text-white' />
+            <div id='add-journal-btn' onClick={() => setIsOpen(true)} className={cn('absolute bottom-[10%] right-[10%] bg-blue-400 w-10 h-10 rounded-full flex items-center justify-center',)}>
+                <Plus className='text-white' />
             </div>
             <JournalDialog
                 handleImageChange={handleImageChange}

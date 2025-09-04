@@ -1,10 +1,10 @@
 // src/Month.tsx
-import { format, formatDate, isSameMonth } from "date-fns";
-import { getMonthDays } from "../../util/date";
-import { cn } from "../../util/helper";
-import { CalendarContext } from "../../contexts/calendar-context";
 import { useContext } from "react";
-import JournalCardMonth from "./journal-card-month";
+import { format, formatDate, isSameMonth } from "date-fns";
+import { getMonthDays } from "@/util/date";
+import { cn } from "@/lib/utils";
+import { CalendarContext } from "@/contexts/calendar-context";
+import JournalCardMonth from "@/components/card/journal-card-month";
 
 
 
@@ -27,8 +27,8 @@ export default function Month({ monthDate, weekStartsOn = 0 }: Props) {
         <section className="border-t border-gray-200 h-full w-full py-[6px] px-0 md:px-[12px]">
 
             <div
+                className="h-[calc(100vh-140px)]"
                 style={{
-                    height: 'calc(100vh - 140px)',
                     width: '100%',
                     display: "grid",
                     gridTemplateColumns: "repeat(7, 1fr)",
@@ -50,9 +50,16 @@ export default function Month({ monthDate, weekStartsOn = 0 }: Props) {
 
                     return (
                         <div key={String(key)}
-                            className={cn("text-right rounded-sm py-1 px-2 box-border text-black",
+                            className={cn("text-right rounded-sm py-1 px-2 box-border text-black cursor-pointer",
                                 isFirstCol && "bg-gray-200"
                             )}
+                            onClick={() => {
+
+                                if (!dimmed && filterdData.length == 0) {
+                                    const elem = document.getElementById('add-journal-btn');
+                                    elem?.click()
+                                }
+                            }}
                             style={{
                                 color: dimmed ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 1)',
                                 border: "1px solid #e5e7eb",
@@ -74,6 +81,6 @@ export default function Month({ monthDate, weekStartsOn = 0 }: Props) {
                     );
                 })}
             </div>
-        </section >
+        </section>
     );
 }

@@ -22,7 +22,7 @@ import { Trash, SquarePen } from 'lucide-react';
 type CalendarContextType = {
     setIsOpen: (val: boolean) => void
     selected: string;
-    setEditData: (val: any) => void;
+    setEditData: React.Dispatch<React.SetStateAction<JournalType | undefined>>;
     setIsEditModal: (val: boolean) => void;
 }
 
