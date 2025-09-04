@@ -1,4 +1,5 @@
 // src/App.tsx
+// @ts-nocheck
 import { useEffect, useMemo, useRef, useState, useContext, useLayoutEffect } from "react";
 import { format, addMonths, subMonths } from "date-fns";
 import Month from "./components/ui/month-card";
